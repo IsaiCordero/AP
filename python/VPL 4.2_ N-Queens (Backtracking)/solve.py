@@ -27,7 +27,6 @@ def solve(num_queens):
             if salvado(tabla,fila,columna):
                 tabla[fila] = columna
                 resolver(tabla, fila + 1)
-                tabla[fila] = 0
     def salvado(tabla, fila, columna):
         for i in range(fila):
             if tabla[i] == columna:
