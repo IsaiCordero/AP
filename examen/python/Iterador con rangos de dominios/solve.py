@@ -1,22 +1,28 @@
+
+
 class My_Iterator:
-    def __init__(self, num_digits, min_values, max_values):
+
+    def __init__(self, num_digits, minimos, maximos):
         self.num_digits = num_digits
-        self.min_values = min_values
-        self.max_values = max_values
-        self.current = [min_values[i] for i in range(self.num_digits)]
-
-    def incremento(self):
-        i = self.num_digits - 1
-        while i >= 0:
-            self.current[i] += 1
-            if self.current[i] <= self.max_values[i]:
+        self.minimos = minimos
+        self.maximos = maximos
+        self.current = [minimos[i] for i in range(num_digits)]
+        #se crean las variables para los valores maximos y minimos(dos listas) y la lista que será retornada con un yield
+    def incrementar(self):
+        j = self.num_digits - 1
+        while j >= 0:
+            self.current[j] += 1
+            #se van sumando valores en la posicion de la lista, si este es menor o igual que el maximo sigue con las iteraciones
+            if self.current[j] <= self.maximos[j]:
                 break
-            self.current[i] = self.min_values[i]
-            i -= 1
-        return i >= 0
-
+            #si es mayor, vuelve a su valor minimo
+            else:
+                self.current[j] = self.minimos[j]
+                j -= 1
+        return j >= 0
+    
     def next(self):
         while True:
             yield list(self.current)
-            if not self.incremento():
+            if not self.incrementar():
                 break
