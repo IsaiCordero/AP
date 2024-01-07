@@ -1,17 +1,18 @@
 from sys import maxsize as infinite
 
 def solve(coins, change):
-    lista = sorted(coins, reverse = True)
+    #Creo copia de la lista monedas y la ordeno
+    lista = coins.copy()
+    lista = sorted(lista, reverse = True)
     result = []
-    final = []
-    for i in range(len(lista)):
-        if lista[i] <= change:
-            change -= lista[i]
-            result.append(lista[i])
-
-    for i in result:
-        for j in range(len(coins)):
-            if i == coins[j]:
-                if j+1 not in final:
-                    final.append(j+1)
-    return final
+    #paso por los valores de esa lista ordenada
+    for i in lista:
+        #si una moneda es menor que el cambio actual
+        if i <= change:
+            #añadimos a la lista resultado la posicion de esa moneda en la lista original(sin ordenar)
+            result.append(coins.index(i) + 1)
+            #restamos al cambio el valor de la moneda
+            change -= i
+            #y ponemos en la lista original el valor a 0 de la posicion de esa moneda para no pillarla otra vez
+            coins[coins.index(i)] = 0
+    return result
