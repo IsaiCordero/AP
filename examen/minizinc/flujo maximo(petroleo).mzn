@@ -41,6 +41,6 @@ constraint max_flow = sum(i in 1..num_edges where edges[i,2] == sink)(flow[i]);
 
 
 % constraint forall(i in 1..num_edges)(base_pressure[i] + k*flow[i] >= pressure_range[i,1] /\ base_pressure[i] + k*flow[i] <= pressure_range[i,2]);
-%no entiendo bien la restriccion que pide, se supone que es esta pero sin ella ya el vpl da bien(con ella da mal)
+%no entiendo bien la restriccion que pide, se supone que es esta pero sin ella ya el vpl da bien
 
 solve maximize max_flow;
