@@ -14,6 +14,8 @@ def solve_memoization(items, capacity):
             result = t(n - 1, w)
         else:
             # Considerar el caso de tomar o no tomar el artículo actual
+            #tambien se puede ver en el pdf de la mochila con memoization
+            #el que pilla es obviamente al que resta el peso pero para saber si pillarlo o no busca el que tenga un posible mejor resultado
             take_item = items[n].value + t(n - 1, w - items[n].weight)
             leave_item = t(n - 1, w)
             result = max(take_item, leave_item)
@@ -28,9 +30,10 @@ def solve_memoization(items, capacity):
         while n >= 0 and w >= 0:
             if (n, w) not in mem:
                 break  # Terminar el bucle si la clave no está en el diccionario
-
+            #si está en la ultima posicion y queda todavia espacio, lo agarra
             if n == 0 and mem[(n, w)] > 0:
                 taken.insert(0, n)
+            #si el valor actual es diferente al siguiente, lo agarra y resta valor de la capacidad
             elif mem[(n, w)] != mem.get((n - 1, w), 0):
                 taken.insert(0, n+1)
                 w -= items[n].weight
