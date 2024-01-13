@@ -15,6 +15,8 @@ def solve_tabulation(items):
         taken = []
         i = len(items)
         while i >= 1:
+            #si se encuentra en la ultima posicion de la tabla o si el valor de la casa actual es mayor que el de la siguiente, robará esa casa
+            #esto es muy parecido al memoization con el tema de la tabla(en el ejercicio de la mochila esto es mas diferente)
             if i == 1 or table[i - 2] + items[i - 1] > table[i - 1]:
                 taken.append(i)
                 i -= 2
