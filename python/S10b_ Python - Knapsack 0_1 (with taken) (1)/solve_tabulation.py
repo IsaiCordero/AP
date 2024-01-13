@@ -15,6 +15,7 @@ def solve_tabulation(items, capacity):
                 if weight <= j:
                     # Si el peso del elemento es menor o igual a la capacidad actual,
                     # calcula el máximo entre tomar o no tomar el elemento en la mochila
+                    # esta tabla se puede ver en el pdf de tabulation de knapshack (es bastante sencilla de entender)
                     table[i][j] = max(table[i - 1][j], value + table[i - 1][j - weight])
                 else:
                     # Si el peso del elemento es mayor que la capacidad actual,
@@ -26,6 +27,7 @@ def solve_tabulation(items, capacity):
         i = len(items)
         j = capacity
         while i > 0 and j > 0:
+            #si el elemento actual es mayor que el siguiente significará que se agarra
             if table[i][j] != table[i - 1][j]:
                 taken.insert(0, i)  # Inserta el índice del elemento seleccionado
                 j -= items[i - 1].weight  # Resta el peso del elemento seleccionado
