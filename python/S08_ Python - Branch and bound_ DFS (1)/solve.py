@@ -26,13 +26,13 @@ def solve_branch_and_bound_DFS(capacity, items, record_visiting_order=False):
 
     # 1) Creamos el nodo raiz.
     # ...
-    raiz = Node(0,[],0, capacity)
+    raiz = Node(0,[],0,capacity)
     # Lo añadimos a la lista de nodos vivos (alive)
     # ...
     alive.append(raiz)
     # Mientras haya nodos en la lista de nodos vivos
     # ...
-    best_solution = 0
+    value = 0
     taken = []
     while len(alive) > 0:
         # Avanzamos al siguiente nodo de nuestro recorrido DFS (hacemos un pop
@@ -43,24 +43,25 @@ def solve_branch_and_bound_DFS(capacity, items, record_visiting_order=False):
             visiting_order.append(current.index)
         # Condiciones de poda
         # ...
-        if current.room < 0:  #se comprueba el espacio de la mochila
+        if current.room < 0:
             continue
-        if current.estimate(items) < best_solution:   # se comprueba si mejora la solucion actual
+        if current.estimate(items) < value:
             continue
-        if current.index >= len(items):      # se comprueba que no estemos al final de arbol
+        if current.index >= len(items):
             continue
         # Si no hemos llegado al final del árbol
         #    1) Ramificamos (branch) por la derecha (append)
+        derecha = Node(current.index + 1, current.taken, current.value, current.room)
+        alive.append(derecha)
         #    2) Ramificamos (branch) por la izquierda (append)
         # ...
-        derecha = Node(current.index + 1, current.taken, current.value, current.room)  #solo aumenta el index
-        alive.append(derecha)
         taken_izquierda = current.taken.copy()
-        taken_izquierda.append(current.index + 1)
-        izquierda = Node(current.index + 1, taken_izquierda, current.value + items[current.index].value, current.room - items[current.index].weight) #aumenta index, taken y value pero disminuye el room(capacidad de la mochila)
+        taken_izquierda.append(current.index+1)
+        izquierda = Node(current.index + 1, taken_izquierda, current.value + items[current.index].value, current.room - items[current.index].weight)
         alive.append(izquierda)
 
-        if current.room - items[current.index].weight > 0 and current.value + items[current.index].value > best_solution:  # si el valor es mejor al que teniamos y hay capaicdad en la mochila, lo actualizamos
-            best_solution = current.value + items[current.index].value
+        if current.room - items[current.index].weight > 0 and current.value + items[current.index].value > value:
             taken = taken_izquierda
-    return best_solution, taken, visiting_order
+            value = current.value + items[current.index].value
+
+    return value, taken, visiting_order
