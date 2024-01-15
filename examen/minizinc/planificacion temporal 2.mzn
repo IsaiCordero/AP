@@ -1,26 +1,30 @@
 include "globals.mzn";
-include "cumulative.mzn";
-int:n = 4; % total programas
 
-int:k = 5; % numero total de programadores
-int:z = 4; % numero total de analistas
+int:n; % total programas
 
-int:max_tiempo = 20; % limite superior de tiempo
+int:k; % numero total de programadores
+int:z; % numero total de analistas
 
-array [1..n] of int: tiempo=[2,4,6,3];
-array [1..n] of int: programadores=[3,2,4,2];
-array [1..n] of int: analistas=[2,2,2,2];
+int:max_tiempo; % limite superior de tiempo
+
+array [1..n] of int: tiempo;
+array [1..n] of int: programadores;
+array [1..n] of int: analistas;
 
 output["Total: "++show(total)++"\n"];
 
-%output [show(comienzo[i])++" " | i in 1..n];
+% Activa esta linea si quieres ver cuando comienza cada tarea
+% ... pero recuerda desactivarla para evaluar este VPL.
+% output [show(comienzo[i])++" " | i in 1..n];
 
 
 % Introducir el codigo a partir de aqui -------------------------------------
-array[1..n] of var 0..max_tiempo: comienzo;
-constraint cumulative(comienzo, tiempo, programadores, k);
-constraint cumulative(comienzo, tiempo, analistas, z);
+
+array[1..n] of var 0..max_tiempo:comienzo;
+var 0..max_tiempo:total;
+constraint cumulative(comienzo,tiempo,programadores,k);
+constraint cumulative(comienzo,tiempo,analistas,z);
 constraint forall(i in 1..n-1)(comienzo[i] != comienzo[i+1]);
-var 1..max_tiempo: total;
-constraint forall(i in 1..n)(tiempo[i] + comienzo[i] <= total);
+constraint forall(i in 1..n)(comienzo[i] + tiempo[i] <= total);
 solve minimize total;
+
